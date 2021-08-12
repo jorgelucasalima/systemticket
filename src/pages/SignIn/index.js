@@ -1,5 +1,5 @@
 
-function SingIn() {
+function SignIn() {
     return (
       <div>
         <h1>PAGINA DE LOGIN</h1>
@@ -7,4 +7,4 @@ function SingIn() {
     );
   }
   
-  export default SingIn;
+  export default SignIn;
