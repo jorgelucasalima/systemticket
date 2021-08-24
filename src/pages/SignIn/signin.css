@@ -54,7 +54,7 @@ form h1 {
 form button {
     height: 45px;
     border: 0;
-    border-radius: 8px;
+    border-radius: 6px;
     background-color: #181c2e;
     color: #fff;
     font-size: 1.3em;
