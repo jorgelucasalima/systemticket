@@ -60,7 +60,6 @@ function AuthProvider({ children }) {
     }
 
 
-
     // FUNÇÃO - cadastrando usuario e incluindo no firebase
     async function signUp(email, password, nome) {
         setLoadingAuth(true)
@@ -95,7 +94,7 @@ function AuthProvider({ children }) {
         })
     }
 
-
+    // FUNÇÃO - Guarda o json no localstorage
     function storageUser(data) {
         localStorage.setItem('SistemaUser', JSON.stringify(data))
     }
