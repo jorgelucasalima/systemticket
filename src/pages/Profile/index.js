@@ -13,9 +13,14 @@ export default function Profile(params) {
 
   const { user, signOut } = useContext(AuthContext);
 
-  const {nome, setNome} = useState(user && user.nome)
-  const {email, setEmail} = useState(user && user.email)
-  const {avatarUrl, setAvatarUrl} = useState(user && user.avatarUrl)
+  const [nome, setNome] = useState(user && user.nome)
+  const [email, setEmail] = useState(user && user.email)
+  const [avatarUrl, setAvatarUrl] = useState(user && user.avatarUrl)
+
+  function handleSave(e) {
+    e.preventDefault()
+    alert('salvou')
+  }
 
   return(
     <div>
@@ -27,7 +32,7 @@ export default function Profile(params) {
         </Title>
 
         <div className="container">
-          <form className="form-profile">
+          <form className="form-profile" onSubmit={handleSave}>
             <label className="label-avatar">
               <span>
                 <FiUpload color="#FFF" size={25} />
@@ -42,7 +47,7 @@ export default function Profile(params) {
             </label>
 
             <label>Nome</label>
-            <input type="text" value={nome} onChange={ (e) => setNome(e.target.value)} />
+            <input type="text" value={nome} onChange={ (e) => setNome(e.target.value) } />
             <label>E-mail</label>
             <input type="text" value={email} disabled={true} />
             <button type="submit">Salvar</button>
