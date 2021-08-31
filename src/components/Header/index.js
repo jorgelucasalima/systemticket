@@ -21,7 +21,7 @@ export default function Header(params) {
 
       <Link to="/dashboard">
         <FiHome color="#FFF" size={24} />
-        Chamados
+        Tickets
       </Link>
       <Link to="/customers">
         <FiUser color="#FFF" size={24} />
