@@ -5,6 +5,7 @@ import Header from '../../components/Header'
 import Title from '../../components/Title'
 import { FiPlus } from 'react-icons/fi'
 import { AuthContext } from '../../contexts/auth'
+import { toast } from 'react-toastify'
 
 import './new.css'
 
@@ -59,8 +60,28 @@ export default function New(params) {
   }, [])
 
   
-  function handleRegister(e) {
+  async function handleRegister(e) {
     e.preventDefault()
+
+    await firebase.firestore().collection('tickets')
+    .add({
+      created: new Date(),
+      cliente: customers[customersSelected].nomeFantasia,
+      clienteId: customers[customersSelected].id,
+      assunto: assunto,
+      status: status,
+      complemento: complemento,
+      userId: user.uid
+    })
+    .then( () => {
+      toast.success('Ticket criado com sucesso.')
+      setComplemento('')
+      setCustomersSelected(0)
+    })
+    .catch( (error) => {
+      toast.error('ocorreu algum problema ao registrar.')
+      console.log('ocorreu o seguinte erro', error)
+    })
     
   }
 
