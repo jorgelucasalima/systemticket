@@ -23,6 +23,21 @@ export default function Dashboard(){
 
 
     useEffect(() => {
+
+
+        async function loadChamados() {
+            await listRef.limit(5)
+            .get()
+            .then((snapshort) => {
+                updateState(snapshort)
+            })
+            .catch((error) => {
+                console.log('ocorreu algum erro no loadchamado', error)
+                setLoadingMore(false)
+            })
+            setLoading(false)
+        }
+
         
         loadChamados()
 
@@ -36,18 +51,7 @@ export default function Dashboard(){
 
 
     //FUNÇÕES
-    async function loadChamados() {
-        await listRef.limit(5)
-        .get()
-        .then((snapshort) => {
-            updateState(snapshort)
-        })
-        .catch((error) => {
-            console.log('ocorreu algum erro no loadchamado', error)
-            setLoadingMore(false)
-        })
-        setLoading(false)
-    }
+    
 
 
     async function updateState(snapshort) {
@@ -95,6 +99,9 @@ export default function Dashboard(){
     }
 
 
+    function togglePostModal(item) {
+        alert('pegou seach')
+    }
 
 
     if (loading) {
@@ -167,7 +174,7 @@ export default function Dashboard(){
                                             </td>
                                             <td data-label="Cadastrado">{item.createdFormated}</td>
                                             <td data-label="#">
-                                                <button className="action" style={{backgroundColor: '#3583f6'}}>
+                                                <button className="action" style={{backgroundColor: '#3583f6'}} onClick={ () => togglePostModal(item) }>
                                                     <FiSearch color="#FFF" size={17} />
                                                 </button>
                                                 <button className="action" style={{backgroundColor: '#f6a935'}}>
