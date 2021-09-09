@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from 'react'
+import { useHistory, useParams } from 'react-router-dom'
 
 import firebase from '../../services/firebaseConnections'
 import Header from '../../components/Header'
@@ -12,6 +13,11 @@ import './new.css'
 
 
 export default function New(params) {
+
+  const { id } = useParams()
+  const history = useHistory()
+
+
   
   const [loadCustomers, setLoadCustomers] = useState(true)
   const [customers, setCustomers] = useState([])
@@ -20,6 +26,8 @@ export default function New(params) {
   const [assunto, setAssunto] = useState('Suporte')
   const [status, setStatus] = useState('Aberto');
   const [complemento, setComplemento] = useState('');
+
+  const [idCustomer, setIdCustomer] = useState(false)
 
 
   const { user } = useContext(AuthContext)
@@ -47,6 +55,12 @@ export default function New(params) {
         setCustomers(lista)
         setLoadCustomers(false)
 
+        if (id) {
+          loadId(lista)
+        }
+
+
+
       })
       .catch((error)=>{
         console.log('Ocorreu algum erro', error)
@@ -59,9 +73,55 @@ export default function New(params) {
 
   }, [])
 
+
+  async function loadId(lista) {
+    await firebase.firestore().collection('tickets').doc(id)
+    .get()
+    .then((snapshort) => {
+      setAssunto(snapshort.data().assunto)
+      setStatus(snapshort.data().status)
+      setComplemento(snapshort.data().complemento)
+
+
+      let index = lista.findIndex(item => item.id === snapshort.data().clienteId)
+      setCustomersSelected(index)
+      setIdCustomer(true)
+    })
+    .catch((err) => {
+      console.log('Erro no ID passado: ', err)
+      setIdCustomer(false)
+    })
+
+  }
   
   async function handleRegister(e) {
     e.preventDefault()
+
+    if (idCustomer) {
+      await firebase.firestore().collection('tickets')
+      .doc(id)
+      .update({
+        cliente: customers[customersSelected].nomeFantasia,
+        clienteId: customers[customersSelected].id,
+        assunto: assunto,
+        status: status,
+        complemento: complemento,
+        userId: user.uid,
+      })
+      .then(()=>{
+        toast.success('Ticket Editado com sucesso.')
+        setCustomersSelected(0)
+        setComplemento('')
+        history.push('/dashboard')
+      })
+      .catch((err)=>{
+        toast.error('Erro ao registrar, tente novamente depois')
+        console.log(err)
+      })
+
+      return
+    }
+
 
     await firebase.firestore().collection('tickets')
     .add({
