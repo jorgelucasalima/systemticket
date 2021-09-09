@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import firebase from '../../services/firebaseConnections'
 
 import Header from "../../components/Header"
+import Modal from "../../components/Modal"
 import Title from '../../components/Title'
 import './dashboard.css'
 import { FiMessageSquare, FiPlus, FiSearch, FiEdit2 } from "react-icons/fi";
@@ -20,6 +21,8 @@ export default function Dashboard(){
     const [loadingMore, setLoadingMore] = useState(false)
     const [isEmpty, setIsEmpty] = useState(false);
     const [lastDocs, setLastDocs] = useState()
+    const [showPostModal, setShowPostModal] = useState(false)
+    const [detail, setDetail] = useState()
 
 
     useEffect(() => {
@@ -100,7 +103,8 @@ export default function Dashboard(){
 
 
     function togglePostModal(item) {
-        alert('pegou seach')
+        setShowPostModal(!showPostModal)
+        setDetail(item)
     }
 
 
@@ -202,6 +206,16 @@ export default function Dashboard(){
        
 
             </div>
+
+
+            {showPostModal && (
+                <Modal
+                    conteudo={detail}
+                    close={togglePostModal}
+                />
+            )}                                    
+
+
 
         </div>
     )
